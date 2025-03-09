@@ -57,14 +57,12 @@ public class Consulta
 
     public void SetNumeroTelefone(string numeroTelefone)
     {
-        if (string.IsNullOrWhiteSpace(numeroTelefone) || !long.TryParse(numeroTelefone, out long parsedNumber) || parsedNumber <= 0)
-            throw new ArgumentException("Número de telefone inválido.");
         NumeroTelefone = numeroTelefone;
     }
 
     public void SetCpf(long cpf)
     {
-        if (cpf <= 0 || cpf > 11)
+        if (cpf <= 0 || cpf.ToString().Count() > 11)
             throw new ArgumentException("CPF inválido.");
         Cpf = cpf;
     }
@@ -85,7 +83,7 @@ public class Consulta
 
     public void SetEstado(string estado)
     {
-        if (string.IsNullOrWhiteSpace(estado) || !estado.All(char.IsLetter))
+        if (string.IsNullOrWhiteSpace(estado))
             throw new ArgumentException("Estado do paciente inválido.");
         Estado = estado;
     }
