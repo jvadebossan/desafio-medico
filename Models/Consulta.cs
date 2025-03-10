@@ -4,7 +4,20 @@ namespace desafioMedicos.Models;
 
 public class Consulta
 {
-    public Consulta(DateTime dataConsulta, string horaConsulta, string nomePaciente, string numeroTelefone, long cpf, string rua, string cidade, string estado, string especialidade, string nomeMedico, bool particular, long numeroCarteirinha)
+    public Consulta(
+        DateTime dataConsulta,
+        string horaConsulta,
+        string nomePaciente,
+        string numeroTelefone,
+        long cpf,
+        string rua,
+        string cidade,
+        string estado,
+        string especialidade,
+        string nomeMedico,
+        bool particular,
+        long numeroCarteirinha,
+        double valorConsulta)
     {
         SetDataConsulta(dataConsulta);
         SetHoraConsulta(horaConsulta);
@@ -18,6 +31,7 @@ public class Consulta
         SetNomeMedico(nomeMedico);
         SetParticular(particular);
         SetNumeroCarteirinha(numeroCarteirinha);
+        SetValorConsulta(valorConsulta);
     }
 
     public DateTime DataConsulta { get; protected set; }
@@ -32,6 +46,12 @@ public class Consulta
     public string NomeMedico { get; protected set; }
     public bool Particular { get; protected set; }
     public long NumeroCarteirinha { get; protected set; }
+    public double ValorConsulta { get; protected set; }
+
+    public void SetValorConsulta(double valorConsulta)
+    {
+        ValorConsulta = valorConsulta;
+    }
 
 
     public void SetDataConsulta(DateTime dataConsulta)
