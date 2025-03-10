@@ -68,11 +68,11 @@ class Program
     public static void Main(string[] args)
     {
         DataImport();
-        //Ex1();
+        Ex1();
         //Ex2();
         //Ex3();
         //Ex4();
-        Ex5();
+        //Ex5();
         //Desafio1();
         //Desafio2();
         //Desafio3();
@@ -82,16 +82,22 @@ class Program
     //TODO 1 – Liste ao total quantos pacientes temos para atender do dia 27/03 até dia 31/03. Sem repetições.
     static void Ex1()
     {
-        DateTime inicio = new DateTime(2023, 03, 27, 0, 0, 0);
-        DateTime fim = new DateTime(2023, 03, 31, 0, 0, 0);
+        DateTime inicio = new DateTime(2023, 03, 27);
+        DateTime fim = new DateTime(2023, 03, 31);
+        var pacientes = consultas.Where(c => c.DataConsulta >= inicio && c.DataConsulta <= fim);
+        var total = pacientes.DistinctBy(c => c.NomePaciente).Count();
 
-        var result = consultas.DistinctBy(c => c.NomePaciente)
-        .Where(c => c.DataConsulta >= inicio && c.DataConsulta <= fim)
-        .Count();
+        Console.WriteLine($"Total: {total}");
+        foreach (var paciente in pacientes)
+        {
+            Console.WriteLine($"{paciente.NomePaciente}");
+        }
 
-        Console.WriteLine($"Total: {result}");
-
-        //Total: 47
+        // Total: 47
+        // João da Silva
+        // Ana Souza
+        // Maria Santos
+        // João da Silva
     }
 
     //TODO 2 – Liste ao total quantos médicos temos trabalhando em nosso consultório. Conte a quantidade de médicos sem repetições.
