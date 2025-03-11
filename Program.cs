@@ -122,18 +122,29 @@ class Program
     static void Ex3()
     {
         var result = consultas.GroupBy(c => c.NomeMedico)
+<<<<<<< HEAD
         .Select(c => new { nome = c.Key, especialidade = c.Select(c => c.Especialidade).Distinct() });
+=======
+        .Select(c => new { nome = c.Key, especialidade = c.Select(c => c.Especialidade) })
+        ;
+>>>>>>> 9b835260a91260ceaddf0dadedf5b8f45ec1df08
 
         foreach (var res in result)
         {
             Console.WriteLine($"{res.nome} - {string.Join(", ", res.especialidade)}");
         }
 
+<<<<<<< HEAD
         // Ana Luiza Pereira - Ortopedia
         // Rafaela Silva - Cardiologia
         // Lucas Oliveira - Neurologia
         // Marcos Costa - Oftalmologia
         // Carla Oliveira - Pediatria, Dermatologia
+=======
+        // Ana Luiza Pereira - Ortopedia, Ortopedia, Ortopedia
+        // Rafaela Silva - Cardiologia
+        // Lucas Oliveira - Neurologia
+>>>>>>> 9b835260a91260ceaddf0dadedf5b8f45ec1df08
     }
     //TODO 4 – Liste o total em valor de consulta que receberemos. Some o valor de todas as consultas. Depois liste o valor por especialidade.
     static void Ex4()
@@ -187,5 +198,4 @@ class Program
         // Marcos Costa - Oftalmologia: terá uma consulta as 10:00, 12:30
         // Carla Oliveira - Pediatria, Dermatologia: terá uma consulta as 10:30, 12:00, 16:30, 14:00, 16:00
     }
-
 }
