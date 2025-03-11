@@ -68,11 +68,11 @@ class Program
     public static void Main(string[] args)
     {
         DataImport();
-        Ex1();
+        //Ex1();
         //Ex2();
         //Ex3();
         //Ex4();
-        //Ex5();
+        Ex5();
         //Desafio1();
         //Desafio2();
         //Desafio3();
@@ -103,11 +103,11 @@ class Program
     //TODO 2 – Liste ao total quantos médicos temos trabalhando em nosso consultório. Conte a quantidade de médicos sem repetições.
     static void Ex2()
     {
-        var result = consultas.DistinctBy(c => c.NomeMedico);
+        var total = consultas.DistinctBy(c => c.NomeMedico);
 
-        Console.WriteLine($"Total: {result.Count()}");
+        Console.WriteLine($"Total: {total.Count()}");
 
-        foreach (var res in result)
+        foreach (var res in consultas)
         {
             Console.WriteLine($"Médico: {res.NomeMedico}");
         }
@@ -121,18 +121,20 @@ class Program
     //TODO 3 – Liste o nome dos médicos e suas especialidades.
     static void Ex3()
     {
-        var result = consultas.DistinctBy(c => c.NomeMedico);
+        var result = consultas.GroupBy(c => c.NomeMedico)
+        .Select(c => new { nome = c.Key, especialidade = c.Select(c => c.Especialidade).Distinct() });
 
         foreach (var res in result)
         {
-            Console.WriteLine($"Médico: {res.NomeMedico} - Especialidade {res.Especialidade}");
+            Console.WriteLine($"{res.nome} - {string.Join(", ", res.especialidade)}");
         }
 
-        // Médico: Ana Luiza Pereira - Especialidade Ortopedia
-        // Médico: Rafaela Silva - Especialidade Cardiologia    
-        // Médico: Lucas Oliveira - Especialidade Neurologia 
+        // Ana Luiza Pereira - Ortopedia
+        // Rafaela Silva - Cardiologia
+        // Lucas Oliveira - Neurologia
+        // Marcos Costa - Oftalmologia
+        // Carla Oliveira - Pediatria, Dermatologia
     }
-
     //TODO 4 – Liste o total em valor de consulta que receberemos. Some o valor de todas as consultas. Depois liste o valor por especialidade.
     static void Ex4()
     {
@@ -164,17 +166,26 @@ class Program
         Console.WriteLine($"Total de consultas para o dia 30/03: {diaEsp.Count()}");
         Console.WriteLine($"Dessas, {part.Count()} são particulares");
 
-        var agenda = diaEsp.DistinctBy(c => c.NomeMedico);
-
-        foreach (var med in agenda)
+        var result = consultas.GroupBy(c => c.NomeMedico)
+        .Select(c => new
         {
-            Console.WriteLine($"O médico {med.NomeMedico} (especialidade: {med.Especialidade}) terá uma consulta as {med.HoraConsulta}");
+            nome = c.Key,
+            especialidades = c.Select(c => c.Especialidade).Distinct(),
+            horaConsulta = c.Select(c => c.HoraConsulta).Distinct()
+        });
+
+        foreach (var med in result)
+        {
+            Console.WriteLine($"{med.nome} - {string.Join(", ", med.especialidades)}: terá uma consulta as {string.Join(", ", med.horaConsulta)}");
         }
 
         // Total de consultas para o dia 30/03: 13
         // Dessas, 4 são particulares
-        // O médico Rafaela Silva (especialidade: Cardiologia) terá uma consulta as 08:30
-        // O médico Carla Oliveira (especialidade: Pediatria) terá uma consulta as 10:30
-        // O médico João Santos (especialidade: Ortopedia) terá uma consulta as 10:30
+        // Ana Luiza Pereira - Ortopedia: terá uma consulta as 08:00, 09:30, 11:00
+        // Rafaela Silva - Cardiologia: terá uma consulta as 08:30
+        // Lucas Oliveira - Neurologia: terá uma consulta as 09:00
+        // Marcos Costa - Oftalmologia: terá uma consulta as 10:00, 12:30
+        // Carla Oliveira - Pediatria, Dermatologia: terá uma consulta as 10:30, 12:00, 16:30, 14:00, 16:00
     }
+
 }
