@@ -68,11 +68,11 @@ class Program
     public static void Main(string[] args)
     {
         DataImport();
-        Ex1();
+        //Ex1();
         //Ex2();
         //Ex3();
         //Ex4();
-        //Ex5();
+        Ex5();
         //Desafio1();
         //Desafio2();
         //Desafio3();
@@ -103,11 +103,11 @@ class Program
     //TODO 2 – Liste ao total quantos médicos temos trabalhando em nosso consultório. Conte a quantidade de médicos sem repetições.
     static void Ex2()
     {
-        var result = consultas.DistinctBy(c => c.NomeMedico);
+        var total = consultas.DistinctBy(c => c.NomeMedico);
 
-        Console.WriteLine($"Total: {result.Count()}");
+        Console.WriteLine($"Total: {total.Count()}");
 
-        foreach (var res in result)
+        foreach (var res in consultas)
         {
             Console.WriteLine($"Médico: {res.NomeMedico}");
         }
@@ -121,16 +121,18 @@ class Program
     //TODO 3 – Liste o nome dos médicos e suas especialidades.
     static void Ex3()
     {
-        var result = consultas.DistinctBy(c => c.NomeMedico);
+        var result = consultas.GroupBy(c => c.NomeMedico)
+        .Select(c => new { nome = c.Key, especialidade = c.Select(c => c.Especialidade) })
+        ;
 
         foreach (var res in result)
         {
-            Console.WriteLine($"Médico: {res.NomeMedico} - Especialidade {res.Especialidade}");
+            Console.WriteLine($"{res.nome} - {string.Join(", ", res.especialidade)}");
         }
 
-        // Médico: Ana Luiza Pereira - Especialidade Ortopedia
-        // Médico: Rafaela Silva - Especialidade Cardiologia    
-        // Médico: Lucas Oliveira - Especialidade Neurologia 
+        // Ana Luiza Pereira - Ortopedia, Ortopedia, Ortopedia
+        // Rafaela Silva - Cardiologia
+        // Lucas Oliveira - Neurologia
     }
 
     //TODO 4 – Liste o total em valor de consulta que receberemos. Some o valor de todas as consultas. Depois liste o valor por especialidade.
@@ -178,3 +180,4 @@ class Program
         // O médico João Santos (especialidade: Ortopedia) terá uma consulta as 10:30
     }
 }
+
