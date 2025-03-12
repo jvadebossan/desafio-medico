@@ -191,16 +191,61 @@ class Program
     //TODO 1 – Verifique se algum paciente tem alguma consulta marcada no mesmo horário. Tem? Aponte quais, pois precisaremos ligar para o paciente. Não tem telefone? Procure se há alguém que more na mesma Rua, Cidade e Estado que o paciente para tentarmos entrar em contato.
     static void Desafio1()
     {
-        var repetidos = consultas.GroupBy(c => c.DataConsulta);
+        //! TESTE (voltar caso de merda)
+        // var repetidos = consultas.GroupBy(c => c.DataConsulta);
 
-        foreach (var c in repetidos)
+        // foreach (var consulta in repetidos)
+        // {
+        //     Console.WriteLine(consulta.Key.ToString("dd/MM/yyyy"));
+        //     var horasRept = consulta.GroupBy(c => c.HoraConsulta);
+        //     foreach (var con in horasRept)
+        //     {
+        //         if (con.Count() > 1)
+        //         {
+        //             var horaRept = con.Key;
+        //             var pacientesRept = consulta.Where(c => c.HoraConsulta == horaRept);
+
+        //             var nomePaciente = pacientesRept.Select(c => c.NomePaciente);
+        //             Console.WriteLine($"{horaRept}: {string.Join(", ", nomePaciente)} (numero aq))  /");
+        //         }
+        //     }
+        //     Console.WriteLine("\n");
+        // }
+
+        var agendamentos = consultas
+            .GroupBy(c => new { c.DataConsulta, c.HoraConsulta })
+            .OrderBy(c => c.Key.DataConsulta);
+
+        var consultasDuplicadas = agendamentos
+            .Where(g => g.Count() > 1)
+            .SelectMany(g => g)
+            .ToList();
+
+        //? SELECT MANY 
+        //? transforma tudo em uma lista só. 
+        //? [ {[consulta], [consulta]} ] -> [consulta, consulta]
+
+        foreach (var consulta in consultasDuplicadas)
         {
-            Console.WriteLine(c.Key);
-            foreach (var con in c)
+            Console.WriteLine($"\n{consulta.NomePaciente} tem consulta em {consulta.DataConsulta:dd/MM/yyyy} às {consulta.HoraConsulta}. [{consulta.NumeroTelefone ?? "sem número"}]");
+
+            if (string.IsNullOrEmpty(consulta.NumeroTelefone))
             {
-                Console.WriteLine($"{con.NomeMedico} - {con.HoraConsulta}");
+                var contatoAlternativo = consultas.FirstOrDefault(c =>
+                    c.Rua == consulta.Rua &&
+                    c.Cidade == consulta.Cidade &&
+                    c.Estado == consulta.Estado &&
+                    !string.IsNullOrEmpty(c.NumeroTelefone)); // ve se o vizinho tbm nn tem o número
+
+                if (contatoAlternativo != null)
+                {
+                    Console.WriteLine($"Paciente sem telefone. Tenta entrar em contato com {contatoAlternativo.NomePaciente} [{contatoAlternativo.NumeroTelefone}]");
+                }
+                else
+                {
+                    Console.WriteLine("Paciente sem telefone e nenhum contato alternativo encontrado.");
+                }
             }
-            Console.WriteLine("\n");
         }
     }
 }
