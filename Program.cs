@@ -166,7 +166,7 @@ class Program
         Console.WriteLine($"Total de consultas para o dia 30/03: {diaEsp.Count()}");
         Console.WriteLine($"Dessas, {part.Count()} são particulares");
 
-        var result = consultas.GroupBy(c => c.NomeMedico)
+        var result = diaEsp.GroupBy(c => c.NomeMedico)
         .Select(c => new
         {
             nome = c.Key,
