@@ -72,8 +72,8 @@ class Program
         //Ex2();
         //Ex3();
         //Ex4();
-        Ex5();
-        //Desafio1();
+        //Ex5();
+        Desafio1();
         //Desafio2();
         //Desafio3();
 
@@ -186,5 +186,21 @@ class Program
         // Lucas Oliveira - Neurologia: terá uma consulta as 09:00
         // Marcos Costa - Oftalmologia: terá uma consulta as 10:00, 12:30
         // Carla Oliveira - Pediatria, Dermatologia: terá uma consulta as 10:30, 12:00, 16:30, 14:00, 16:00
+    }
+
+    //TODO 1 – Verifique se algum paciente tem alguma consulta marcada no mesmo horário. Tem? Aponte quais, pois precisaremos ligar para o paciente. Não tem telefone? Procure se há alguém que more na mesma Rua, Cidade e Estado que o paciente para tentarmos entrar em contato.
+    static void Desafio1()
+    {
+        var repetidos = consultas.GroupBy(c => c.DataConsulta);
+
+        foreach (var c in repetidos)
+        {
+            Console.WriteLine(c.Key);
+            foreach (var con in c)
+            {
+                Console.WriteLine($"{con.NomeMedico} - {con.HoraConsulta}");
+            }
+            Console.WriteLine("\n");
+        }
     }
 }
